@@ -23,7 +23,6 @@ export default function LoginAdmin() {
                     }}
                 >
                     <Container maxWidth="sm">
-
                         <Grid
                             container
                             direction="column"

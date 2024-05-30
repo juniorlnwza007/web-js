@@ -23,7 +23,6 @@ export default function HomePage() {
                     }}
                 >
                     <Container maxWidth="sm">
-
                         <Grid
                             container
                             direction="column"
@@ -80,7 +79,6 @@ export default function HomePage() {
                                 </Grid>
                             </Box>
                         </Grid>
-
                     </Container>
                 </Box>
             </main>
