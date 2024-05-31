@@ -140,7 +140,6 @@ export default function Register() {
                                 </Grid>
                             </Stack>
                         </Grid>
-
                     </Box>
                 </Box>
             </Container>
