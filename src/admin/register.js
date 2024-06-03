@@ -35,7 +35,7 @@ export default function Register() {
                     </Typography>
                     <Box component="form" noValidate sx={{ mt: 2 }}>
                         <Grid justifyContent="center" alignItems="center" container spacing={2}>
-                            <Grid item xs={6}>
+                            <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
@@ -43,7 +43,7 @@ export default function Register() {
                                     autoFocus
                                 />
                             </Grid>
-                            <Grid item xs={6} sm={6}>
+                            <Grid item xs={12} sm={12}>
                                 <TextField
                                     required
                                     fullWidth

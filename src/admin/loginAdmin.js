@@ -9,42 +9,37 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 export default function LoginAdmin() {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
 
-    const handleLogin = async () => {
-        if (username === '' || password === '') {
-            setError('Username and password are required');
-            return;
-        }
+    const handleLogin = async (event) => {
+        event.preventDefault();
         try {
-            const response = await axios.post('https://ggapi-uat.5k2an3or4q209.xyz/ggapi/login', {
-                username,
-                password,
+            const response = await axios.get(`${process.env.REACT_APP_API_SERVER}/login`, {
                 brandcode: 'THB1',
-                ip: '0.0.0.0',
-                language: 'th',
-            }, {
-                headers: {
-                    Authorization: 'Bearer r7k8fGbeYkmeffoMaK8Tl637xpmd9toHZ7D21Wok5WyLqnPU5ChWUVSAcR0y90on'
-                }
+                username: username,
+                password: password,
+                language: 'th-TH',
+                ip: '0.0.0.0'
             });
-
-            if (response.data.success) {
-                window.location.href = '/HomePage-3000';
+            if (response.status === 200 && response.data.status === "success") {
+                alert("เข้าสู่ระบบสำเร็จ");
+                navigate(`/viewAllUser-3000`);
             } else {
-                setError('Invalid username or password');
+                alert('The username or password is incorrect.');
             }
-        } catch (error) {
-            setError('An error occurred during login');
+        } catch (err) {
+            console.error(err);
+            alert('An error occurred during login.');
         }
     };
-
+    
     return (
         <ThemeProvider theme={theme}>
             <main>
@@ -70,32 +65,27 @@ export default function LoginAdmin() {
                                     ADMIN
                                 </Typography>
                             </Grid>
-                            {error && (
-                                <Grid item>
-                                    <Typography color="error">{error}</Typography>
-                                </Grid>
-                            )}
                             <Grid item>
                                 <TextField
                                     label="Username"
                                     variant="outlined"
+                                    fullWidth
+                                    name="username"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
-                                    fullWidth
                                 />
                             </Grid>
-
                             <Grid item>
                                 <TextField
                                     label="Password"
                                     variant="outlined"
                                     type="password"
+                                    name="password"
+                                    fullWidth
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    fullWidth
                                 />
                             </Grid>
-
                             <Grid item>
                                 <Stack spacing={2} direction="row">
                                     <Button
@@ -107,8 +97,8 @@ export default function LoginAdmin() {
                                                 color: '#FFEB3B',
                                             },
                                         }}
-                                        onClick={handleLogin}
                                         variant="contained"
+                                        onClick={handleLogin}
                                     >
                                         Login
                                     </Button>
