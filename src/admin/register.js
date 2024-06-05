@@ -1,22 +1,59 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import React, { useState } from 'react';
+import axios from 'axios';
+import {
+    Button, CssBaseline, TextField, Grid, Box, Typography,
+    Container, InputLabel, MenuItem, FormControl, Select,
+    Stack, CircularProgress
+} from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import InputMask from 'react-input-mask';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 export default function Register() {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        username: '',
+        password: '',
+        phone: '',
+        pin: '',
+        bankid: '71',
+        accountname: '',
+        accountnumber: ''
+    });
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const response = await axios.post('http://localhost:8088/register', formData);
+            if (response.status === 200 && response.data.success) {
+                alert("Registration successful");
+                navigate('/viewAllUser');
+            } else {
+                alert('Registration failed. Please try again.');
+            }
+        } catch (err) {
+            if (err.response && err.response.status === 401) {
+                alert('Invalid data provided.');
+            } else {
+                console.error('Registration error:', err);
+                alert('An error occurred during registration.');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -33,99 +70,74 @@ export default function Register() {
                     <Typography variant="h6" sx={{ marginTop: 2 }}>
                         สมัครสมาชิก
                     </Typography>
-                    <Box component="form" noValidate sx={{ mt: 2 }}>
-                        <Grid justifyContent="center" alignItems="center" container spacing={2}>
+                    <Box component="form" noValidate sx={{ mt: 2 }} onSubmit={handleSubmit}>
+                        <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
-                                    required
+                                    label="Username"
+                                    variant="outlined"
                                     fullWidth
-                                    label="ชื่อ"
-                                    autoFocus
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={12}>
-                                <TextField
+                                    name="username"
+                                    value={formData.username}
+                                    onChange={handleChange}
                                     required
-                                    fullWidth
-                                    name="fname"
-                                    label="นามสกุล"
-                                />
-                            </Grid>
-                            <Grid item xs={8} sm={8}>
-                                <InputMask mask="999 999 9999" maskChar=" ">
-                                    {() => (
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            label="เบอร์โทรศัพท์"
-                                            name="phone"
-                                            type="tel"
-                                        />
-                                    )}
-                                </InputMask>
-                            </Grid>
-                            <Grid item xs={4} sm={4}>
-                                <Button sx={{
-                                    color: '#FFFFFF', bgcolor: '#212121',
-                                    '&:hover': {
-                                        bgcolor: '#424242',
-                                        color: '#FFEB3B',
-                                    },
-                                }} fullWidth variant="contained"> ส่งรหัส </Button>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    label="PIN Code"
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="bank-select-label">ชื่อธนาคาร</InputLabel>
-                                    <Select
-                                        labelId="bank-select-label"
-                                        id="bank-select"
-                                        label="ชื่อธนาคาร"
-                                    >
-                                        <MenuItem value={"Bangkok Bank"}>ธนาคารกรุงเทพ</MenuItem>
-                                        <MenuItem value={"Krung Thai Bank"}>ธนาคารกรุงไทย</MenuItem>
-                                        <MenuItem value={"Siam Commercial Bank"}>ธนาคารไทยพาณิชย์</MenuItem>
-                                        <MenuItem value={"Kasikornbank"}>ธนาคารกสิกรไทย</MenuItem>
-                                        <MenuItem value={"Bank of Ayudhya"}>ธนาคารกรุงศรีอยุธยา</MenuItem>
-                                        <MenuItem value={"TMBThanachart Bank"}>ทีเอ็มบีธนชาต</MenuItem>
-                                        <MenuItem value={"Government Savings Bank"}>ธนาคารออมสิน</MenuItem>
-                                        <MenuItem value={"Government Housing Bank"}>ธนาคารอาคารสงเคราะห์</MenuItem>
-                                        <MenuItem value={"Islamic Bank of Thailand"}>ธนาคารอิสลามแห่งประเทศไทย</MenuItem>
-                                        <MenuItem value={"Land and Houses Bank"}>ธนาคารแลนด์ แอนด์ เฮ้าส์</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputMask mask="9999 9999 9999 9999" maskChar=" ">
-                                    {() => (
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            label="เลขบัญชี"
-                                            name="phone"
-                                            type="tel"
-                                        />
-                                    )}
-                                </InputMask>
+                                <TextField
+                                    label="Password"
+                                    variant="outlined"
+                                    fullWidth
+                                    name="password"
+                                    type="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    required
+                                />
                             </Grid>
 
-                            <Grid item xs={12} sx={{ mb: '5px' }}></Grid>
-                            <Stack
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
-                                spacing={2}
-                            >
-                                <Grid item xs={12} sm={12}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="ชื่อธนาคาร"
+                                    variant="outlined"
+                                    fullWidth
+                                    name="bankid"
+                                    type="bankid"
+                                    value={formData.bankid}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    label="ชื่อบัญชี"
+                                    name="accountname"
+                                    value={formData.accountname}
+                                    onChange={handleChange}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    label="ชื่อบัญชี"
+                                    name="accountnumber"
+                                    value={formData.accountnumber}
+                                    onChange={handleChange}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Stack
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    spacing={2}
+                                >
                                     <Button
                                         type="submit"
-                                        href="/HomePage-3000"
                                         variant="contained"
                                         sx={{
                                             color: '#FFFFFF', bgcolor: '#212121',
@@ -134,11 +146,12 @@ export default function Register() {
                                                 color: '#FFEB3B',
                                             },
                                         }}
+                                        disabled={loading}
                                     >
-                                        ลงทะเบียน
+                                        {loading ? <CircularProgress size={24} color="inherit" /> : 'ลงทะเบียน'}
                                     </Button>
-                                </Grid>
-                            </Stack>
+                                </Stack>
+                            </Grid>
                         </Grid>
                     </Box>
                 </Box>

@@ -17,29 +17,41 @@ export default function LoginAdmin() {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleLogin = async (event) => {
         event.preventDefault();
+        setLoading(true);
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_SERVER}/login`, {
-                brandcode: 'THB1',
+            if (!username || !password) {
+                alert('Please enter both username and password.');
+                setLoading(false);
+                return;
+            }
+
+            const response = await axios.post(`http://localhost:8088/login`, {
                 username: username,
-                password: password,
-                language: 'th-TH',
-                ip: '0.0.0.0'
+                password: password
             });
-            if (response.status === 200 && response.data.status === "success") {
-                alert("เข้าสู่ระบบสำเร็จ");
-                navigate(`/viewAllUser-3000`);
+            if (response.status === 200 && response.data.success === true) {
+                alert("Login successful");
+                navigate(`/viewAllUser`);
             } else {
                 alert('The username or password is incorrect.');
             }
+
         } catch (err) {
-            console.error(err);
-            alert('An error occurred during login.');
+            if (err.response && err.response.status === 401) {
+                alert('Invalid username or password.');
+            } else {
+                console.error('Login error:', err);
+                alert('An error occurred during login.');
+            }
+        } finally {
+            setLoading(false);
         }
     };
-    
+
     return (
         <ThemeProvider theme={theme}>
             <main>
