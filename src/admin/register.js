@@ -72,7 +72,7 @@ export default function Register() {
                     </Typography>
                     <Box component="form" noValidate sx={{ mt: 2 }} onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12}>
+                            <Grid item xs={6}>
                                 <TextField
                                     label="Username"
                                     variant="outlined"
@@ -83,7 +83,7 @@ export default function Register() {
                                     required
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={6}>
                                 <TextField
                                     label="Password"
                                     variant="outlined"
@@ -95,8 +95,25 @@ export default function Register() {
                                     required
                                 />
                             </Grid>
-
-                            <Grid item xs={12}>
+                            <Grid item xs={8}>
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    name="phon"
+                                    label="เบอร์โทร"
+                                    required
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    name="phon"
+                                    label="PIN"
+                                    required
+                                />
+                            </Grid>
+                            {/* <Grid item xs={12}>
                                 <TextField
                                     label="ชื่อธนาคาร"
                                     variant="outlined"
@@ -107,7 +124,7 @@ export default function Register() {
                                     onChange={handleChange}
                                     required
                                 />
-                            </Grid>
+                            </Grid> */}
                             <Grid item xs={12}>
                                 <TextField
                                     required
@@ -122,7 +139,7 @@ export default function Register() {
                                 <TextField
                                     required
                                     fullWidth
-                                    label="ชื่อบัญชี"
+                                    label="เลชที่บัญชี"
                                     name="accountnumber"
                                     value={formData.accountnumber}
                                     onChange={handleChange}

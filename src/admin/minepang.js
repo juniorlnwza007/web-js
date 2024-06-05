@@ -99,9 +99,7 @@ export default function MinePage() {
                         </Grid>
                     ))}
                 </Box>
-
-
-
+                
             </Container>
         </div>
     )

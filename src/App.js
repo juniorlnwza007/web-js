@@ -8,15 +8,13 @@ import ViewAllUser from './admin/viewAllUser';
 import Appbar from "./components/app-bar";
 import MinePage from "./admin/minepang";
 
-
-
 function App() {
   return (
     <BrowserRouter>
       <Appbar></Appbar>
       <Routes  >
-        <Route path="/" element={<LoginAdmin />} />
-        <Route path="/minePage" element={<MinePage />} />
+        <Route path="/" element={<MinePage />} />
+        <Route path="/login" element={<LoginAdmin />} />
         <Route path="/HomePage" element={<HomePage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/viewAllUser" element={<ViewAllUser />} />
