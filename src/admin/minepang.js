@@ -1,105 +1,91 @@
 import { Box, Button, Typography } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
-import { useEffect, useState } from "react";
-import axios from "axios";
 import Container from '@mui/material/Container';
-
-import ButtonGroup from '@mui/material/ButtonGroup';
-
-import { useNavigate } from "react-router-dom";
+import AllDataPage from "../DataPage/allDataPage";
 
 const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
+    backgroundColor: '#212121',
     textAlign: 'center',
-    color: theme.palette.text.secondary,
+    color: '#9e9d24',
+    height: 100,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 25
 }));
 
+const style = {
+    color: '#FFEB3B',
+    bgcolor: '#212121',
+    '&:hover': {
+        bgcolor: '#424242',
+        color: '#FFFFFF',
+    },
+    border: '2px solid', borderColor: '#FFD700'
+}
+
 export default function MinePage() {
-    const [gameData, setGameData] = useState(null);
-
-    useEffect(() => {
-        const getGame = async () => {
-            try {
-                const response = await axios.post('http://localhost:8088/gamelist');
-                if (response && response.data) {
-                    setGameData(response.data);
-                    console.log('response', response);
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        };
-
-        getGame();
-    }, []);
-
-    if (!gameData) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <div>
             <Container>
-                <Box sx={{ p: 2 }} textAlign={"center"} >
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Grid container
-                            direction="row"
-                            justifyContent="center"
-                            alignItems="center"
-                            spacing={1}>
-                            {gameData.ProviderData.map((category, index) => (
-                                <Grid item xs={2} md={2}>
-                                    <Button fullWidth variant="outlined"
-                                        sx={{
-                                            bgcolor: '#212121',
-                                            color: '#9e9d24'
-                                        }}>{category.CategoryName}</Button>
+                <Box sx={{ flexGrow: 1, mt: 1 }}>
+                    <Box sx={{ flexGrow: 1, p: 1,  }}>
+                        <Grid container spacing={{ xs: 1, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={12} >
+                                    <Item sx={{border: '2px solid', borderColor: '#FFD700' }}>
+                                        TEST69
+                                    </Item>
                                 </Grid>
-                            ))}
+                            </Grid>
+                        </Grid>
+                    </Box>
+                    <Box sx={{ flexGrow: 1, p: 1 }}>
+                        <Grid container spacing={{ xs: 1, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                            <Grid container direction="row" justifyContent="center" alignItems="center" spacing={1}>
+                                <Grid item xs={1.5} md={1.5} >
+                                    <Button sx={{ ...style }} fullWidth variant="contained">ยอดนิยม</Button>
+                                </Grid>
+                                <Grid item xs={1.5} md={1.5}>
+                                    <Button
+                                        component={Link}
+                                        to="/SlotsDataPage"
+                                        sx={{ ...style }}
+                                        fullWidth
+                                        variant="contained"
+                                    >
+                                        สล็อต
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={1.5} md={1.5}>
+                                    <Button sx={{ ...style }} fullWidth variant="contained">กีฬา</Button>
+                                </Grid>
+                                <Grid item xs={1.5} md={1.5}>
+                                    <Button sx={{ ...style }} fullWidth variant="contained">คาสิโน</Button>
+                                </Grid>
+                                <Grid item xs={1.5} md={1.5}>
+                                    <Button sx={{ ...style }} fullWidth variant="contained">ไพ่</Button>
+                                </Grid>
+                                <Grid item xs={1.5} md={1.5}>
+                                    <Button sx={{ ...style }} fullWidth variant="contained">อีสปร์อต</Button>
+                                </Grid>
+                                <Grid item xs={1.5} md={1.5}>
+                                    <Button sx={{ ...style }} fullWidth variant="contained">หวย</Button>
+                                </Grid>
+                                {/* <Grid item xs={2} md={2}>
+                                    <Button sx={{ ...style }} fullWidth variant="contained">GAMES</Button>
+                                </Grid>
+                                <Grid item xs={2} md={2}>
+                                    <Button sx={{ ...style }} fullWidth variant="contained">RACING</Button>
+                                </Grid> */}
+                            </Grid>
                         </Grid>
                     </Box>
                 </Box>
-
-                <Box>
-                    {gameData.ProviderData.map((category, index) => (
-                        <Grid key={index} container columns={{ xs: 4, sm: 8, md: 12 }}>
-                            {category.ProviderList.map((provider, providerIndex) => (
-                                <Grid item xs={2} sm={2} md={2} key={providerIndex}>
-                                    <Paper
-                                        key={providerIndex}
-                                        sx={{
-                                            m: 1,
-                                            height: 100,
-                                            width: 150,
-                                            position: 'relative',
-                                            overflow: 'hidden',
-                                            bgcolor: '#212121'
-                                        }}
-                                    >
-                                        <img
-                                            src={provider.ProviderLogo}
-                                            alt={provider.ProviderName}
-                                            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-                                        />
-                                        <Typography variant="subtitle2"
-                                            sx={{
-                                                textAlign: 'center', position: 'absolute',
-                                                bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                                                color: '#ffffff', padding: '4px 0'
-                                            }}>
-                                            {provider.ProviderName}
-                                        </Typography>
-                                    </Paper>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    ))}
-                </Box>
-                
+                <AllDataPage />
             </Container>
         </div>
     )

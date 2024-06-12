@@ -18,6 +18,7 @@ export default function LoginAdmin() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [token, setToken] = useState(null);
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -35,6 +36,7 @@ export default function LoginAdmin() {
             });
             if (response.status === 200 && response.data.success === true) {
                 alert("Login successful");
+                setToken(response.data.token);
                 navigate(`/viewAllUser`);
             } else {
                 alert('The username or password is incorrect.');
@@ -55,7 +57,7 @@ export default function LoginAdmin() {
     return (
         <ThemeProvider theme={theme}>
             <main>
-                <Box
+                <div
                     sx={{
                         bgcolor: 'background.paper',
                         pt: 10,
@@ -109,6 +111,7 @@ export default function LoginAdmin() {
                                                 color: '#FFEB3B',
                                             },
                                         }}
+                                        disabled={loading}
                                         variant="contained"
                                         onClick={handleLogin}
                                     >
@@ -118,7 +121,7 @@ export default function LoginAdmin() {
                             </Grid>
                         </Grid>
                     </Container>
-                </Box>
+                </div>
             </main>
         </ThemeProvider>
     );
